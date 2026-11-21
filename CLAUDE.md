@@ -31,6 +31,8 @@ Vite + Three.js, 서버는 Supabase(로그인·DB·Realtime). 순수 JS(TypeScri
 이 밖의 것(PvP, 하우징, 펫, 시즌, 레이드)은 v0.2 이후.
 
 ## 작업 로그 (최신이 위)
+- 2026-11-21: [B] 화면 v0.1 — src/ui/에 로그인·캐릭터 만들기, HUD(내 정보·경험치·스킬바·대상/보스 체력·퀘스트 목록·채팅·메뉴·획득 알림), 가방·장비 창, NPC 대화·퀘스트 진행(quests.js, character.getQuest/setQuest 사용), 도움말. main.js를 devUI: false + mountUI(game)로 바꿈. B의 CSS 클래스는 si- 접두사지만 엔진과 겹치던 si-btn·si-boss·si-dmg는 si-button·si-bossbar·si-dmgtext로 피함
+- 2026-11-21: [B] v0.1 콘텐츠 — 직업 바람검사(스킬 질풍베기·회오리베기·하늘 가르기), 몬스터 이슬 슬라임·깡총버섯·바람 멧돼지·보스 이끼 골렘, 아이템 14종, 레벨 1~10, 섬 바람개비 마을·산들 초원섬 배치. B 전용 data/npcs.json·data/quests.json 추가(엔진은 읽지 않음, game.data.raw로 접근)
 - 2026-11-18: [A] 엔진 v0.1 — 조작(키보드·마우스·터치), 쿼터뷰/3인칭 카메라, 전투 판정·몬스터 AI, 멀티 동기화(호스트 방식)·채팅, 로그인·자동 저장(Supabase/오프라인), 임시 화면(src/engine/dev, main.js의 devUI로 끔), DB SQL(supabase/migrations). @supabase/supabase-js 추가, main.js 교체. 사용법은 src/engine/README.md
 - 2026-11-18: 역할 확정 — A(엔진·시스템) = yunny
 - 2026-11-18: 프로젝트 뼈대 생성 (Vite + Three.js 빈 장면, data 샘플 JSON)

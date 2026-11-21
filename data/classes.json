@@ -1,0 +1,25 @@
+[
+  {
+    "id": "windblade",
+    "name": "바람검사",
+    "icon": "classes/windblade.png",
+    "description": "바람을 가르는 검으로 싸우는 하늘섬의 모험가. 빠른 돌진과 회전 베기가 특기다.",
+    "color": "#5b8def",
+    "baseStats": { "maxHp": 120, "attack": 12, "defense": 4, "moveSpeed": 5, "critRate": 0.05, "critDamage": 1.5 },
+    "statsPerLevel": { "maxHp": 14, "attack": 2, "defense": 1 },
+    "basicAttack": {
+      "name": "검베기",
+      "icon": "skills/basic-attack.png",
+      "description": "앞을 향해 검을 크게 휘두른다.",
+      "cooldownSec": 0.5,
+      "damageMultiplier": 1,
+      "shape": "arc",
+      "range": 2.4,
+      "angleDeg": 110,
+      "color": "#dfe9ff"
+    },
+    "skills": ["gale-dash", "whirlwind", "sky-cleave"],
+    "startingItems": [{ "itemId": "small-potion", "count": 5 }],
+    "startingEquipment": { "weapon": "wooden-sword", "armor": "cloth-tunic" }
+  }
+]

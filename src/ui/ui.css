@@ -1,0 +1,608 @@
+/* 하늘섬 연대기 UI. 모든 클래스는 si- 로 시작한다. 게임 화면 위에 얹히므로 루트는 클릭을 통과시킨다. */
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap');
+
+/* ============ 기본 ============ */
+.si-root {
+  --si-font: 'Gowun Dodum', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
+  --si-display: 'Jua', 'Gowun Dodum', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --si-panel: rgba(18, 30, 56, 0.78);
+  --si-panel-strong: rgba(16, 26, 48, 0.95);
+  --si-panel-line: rgba(255, 233, 190, 0.28);
+  --si-text: #f8f3e8;
+  --si-text-dim: #b8c4da;
+  --si-gold: #ffd36b;
+  --si-sky: #8fd3ff;
+  --si-good: #7be495;
+  --si-bad: #ff7b7b;
+  --si-hp-a: #ff8080;
+  --si-hp-b: #e2364f;
+  --si-enemy-a: #ffa070;
+  --si-enemy-b: #d9483b;
+  --si-bossbar-a: #c58bff;
+  --si-bossbar-b: #7b3fe4;
+  --si-exp-a: #ffe08a;
+  --si-exp-b: #f2b33d;
+  --r-common: rgba(201, 209, 220, 0.55);
+  --r-uncommon: #6fdc8c;
+  --r-rare: #5aa9ff;
+  --r-epic: #c58bff;
+  --si-radius: 14px;
+  --si-gap: 14px;
+  --si-shadow: 0 6px 18px rgba(6, 12, 28, 0.35);
+  --si-slot: 56px;
+  --si-skill: 58px;
+  --si-skill-basic: 70px;
+  --si-safe-t: env(safe-area-inset-top, 0px);
+  --si-safe-r: env(safe-area-inset-right, 0px);
+  --si-safe-b: env(safe-area-inset-bottom, 0px);
+  --si-safe-l: env(safe-area-inset-left, 0px);
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  overflow: hidden;
+  pointer-events: none;
+  font-family: var(--si-font);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--si-text);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+.si-root *, .si-root *::before, .si-root *::after { box-sizing: border-box; }
+.si-root [hidden] { display: none !important; }
+.si-root button { font: inherit; color: inherit; }
+.si-root button:focus-visible, .si-root input:focus-visible { outline: 2px solid var(--si-sky); outline-offset: 2px; }
+.si-interactive, .si-root button, .si-root input { pointer-events: auto; }
+
+.si-glyph { display: inline-grid; place-items: center; width: 100%; height: 100%; color: var(--glyph, currentColor); }
+.si-glyph svg { display: block; width: 100%; height: 100%; }
+.si-icon-img { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+.si-panel {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 45%), var(--si-panel);
+  border: 1px solid var(--si-panel-line);
+  border-radius: var(--si-radius);
+  box-shadow: var(--si-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* ============ 배치 ============ */
+.si-hud { position: absolute; inset: 0; }
+.si-area { position: absolute; display: flex; flex-direction: column; gap: 10px; }
+.si-area--tl { top: calc(var(--si-gap) + var(--si-safe-t)); left: calc(var(--si-gap) + var(--si-safe-l)); }
+.si-area--tr { top: calc(var(--si-gap) + var(--si-safe-t)); right: calc(var(--si-gap) + var(--si-safe-r)); align-items: flex-end; }
+.si-area--bl { bottom: calc(24px + var(--si-safe-b)); left: calc(var(--si-gap) + var(--si-safe-l)); }
+.si-top-center {
+  position: absolute; top: calc(var(--si-gap) + var(--si-safe-t)); left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+
+/* ============ 막대 공통 ============ */
+.si-bar { position: relative; height: 18px; overflow: hidden; border-radius: 9px; background: rgba(0, 0, 0, 0.45); box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5); }
+.si-bar__ghost, .si-bar__fill { position: absolute; top: 0; bottom: 0; left: 0; width: 100%; border-radius: inherit; }
+.si-bar__ghost { background: rgba(255, 240, 220, 0.55); transition: width 0.6s ease 0.25s; }
+.si-bar__fill { transition: width 0.15s ease-out; }
+.si-bar__fill::after { content: ''; position: absolute; top: 1px; left: 4px; right: 4px; height: 40%; border-radius: 9px; background: rgba(255, 255, 255, 0.28); }
+.si-bar__text { position: relative; display: grid; place-items: center; height: 100%; font: 12px/1 var(--si-display); letter-spacing: 0.03em; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75); font-variant-numeric: tabular-nums; }
+.si-bar--hp .si-bar__fill { background: linear-gradient(180deg, var(--si-hp-a), var(--si-hp-b)); }
+.si-bar--enemy { height: 14px; }
+.si-bar--enemy .si-bar__fill { background: linear-gradient(180deg, var(--si-enemy-a), var(--si-enemy-b)); }
+.si-bar--boss { height: 20px; border: 2px solid rgba(255, 211, 107, 0.7); }
+.si-bar--boss .si-bar__fill { background: linear-gradient(180deg, var(--si-bossbar-a), var(--si-bossbar-b)); }
+
+/* ============ 내 정보 ============ */
+.si-player { display: flex; align-items: center; gap: 12px; min-width: 280px; padding: 10px 14px 10px 10px; }
+.si-portrait-wrap { position: relative; flex: none; width: 56px; height: 56px; }
+.si-portrait {
+  width: 100%; height: 100%; padding: 11px; border-radius: 50%; color: #fff;
+  background: var(--class-color, #5b8def);
+  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--class-color, #5b8def) 60%, white), var(--class-color, #5b8def) 60%, color-mix(in srgb, var(--class-color, #5b8def) 60%, black));
+  border: 2px solid var(--si-gold);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.25);
+}
+.si-portrait--img { overflow: hidden; padding: 0; }
+.si-portrait--img .si-icon-img { object-fit: cover; }
+.si-portrait__level {
+  position: absolute; right: -5px; bottom: -5px; min-width: 26px; height: 26px; padding: 0 6px;
+  border: 2px solid var(--si-gold); border-radius: 13px; background: #1b2a47;
+  color: var(--si-gold); font: 16px/22px var(--si-display); text-align: center;
+}
+.si-player__body { display: flex; flex: 1; flex-direction: column; gap: 6px; min-width: 0; }
+.si-player__title { display: flex; align-items: baseline; gap: 8px; }
+.si-player__name { overflow: hidden; font: 18px/1.1 var(--si-display); text-overflow: ellipsis; white-space: nowrap; }
+.si-player__class { flex: none; font-size: 12px; color: var(--si-text-dim); }
+.si-player--low .si-bar--hp { animation: si-pulse 1s ease-in-out infinite; }
+@keyframes si-pulse { 50% { box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(255, 90, 90, 0.7); } }
+.si-buffs { display: flex; gap: 4px; }
+.si-buffs:empty { display: none; }
+.si-buff { --left: 360deg; width: 26px; height: 26px; padding: 2px; border-radius: 8px; background: conic-gradient(var(--si-gold) var(--left), rgba(255, 255, 255, 0.15) 0); }
+.si-buff > * { padding: 2px; border-radius: 6px; background: #1b2a47; }
+
+/* ============ 대상·보스 ============ */
+.si-target { min-width: 230px; padding: 8px 12px 10px; }
+.si-target__title { display: flex; align-items: baseline; justify-content: center; gap: 8px; margin-bottom: 6px; font: 15px/1 var(--si-display); }
+.si-target__level { font-size: 13px; color: var(--si-text-dim); }
+.si-target[data-danger='high'] .si-target__level { color: var(--si-bad); }
+.si-target[data-danger='low'] .si-target__level { color: #8d97a8; }
+/* 보스 바는 양옆의 내 정보·메뉴와 겹치지 않을 만큼만 넓힌다 */
+.si-bossbar { width: max(240px, min(560px, calc(100vw - 620px))); text-align: center; }
+.si-bossbar__head { display: flex; flex-direction: column; align-items: center; margin-bottom: 4px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7); }
+.si-bossbar__title { font-size: 12px; letter-spacing: 0.3em; color: var(--si-gold); }
+.si-bossbar__name { font: 22px/1.15 var(--si-display); }
+
+/* ============ 오른쪽 위: 메뉴·위치 ============ */
+.si-menu { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.si-menu__buttons { display: flex; gap: 8px; }
+.si-menu__btn {
+  position: relative; display: grid; place-items: center; width: 52px; height: 52px; padding: 9px 11px 17px;
+  border: 1px solid var(--si-panel-line); border-radius: 14px; background: var(--si-panel); box-shadow: var(--si-shadow);
+  cursor: pointer;
+}
+.si-menu__btn:hover { border-color: var(--si-gold); }
+.si-menu__btn:active { transform: translateY(1px); }
+.si-menu__label { position: absolute; right: 0; bottom: 5px; left: 0; font-size: 10px; text-align: center; color: var(--si-text-dim); }
+.si-menu__badge {
+  position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 6px;
+  border-radius: 10px; background: var(--si-bad); color: #fff; font: 11px/20px var(--si-display);
+}
+.si-menu__btn--chat { display: none; }
+.si-root[data-input='touch'] .si-menu__btn--chat { display: grid; }
+.si-location { padding: 5px 10px; border-radius: 10px; background: rgba(12, 22, 42, 0.5); text-align: right; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7); }
+.si-location__name { font: 17px/1.2 var(--si-display); }
+.si-location__sub { font-size: 12px; color: var(--si-text-dim); }
+
+/* ============ 퀘스트 추적 ============ */
+.si-quests { width: 250px; margin-top: 4px; }
+.si-quests__head {
+  display: flex; align-items: center; justify-content: flex-end; gap: 6px; width: 100%; padding: 4px 6px;
+  border: 0; background: none; cursor: pointer; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+}
+.si-quests__head .si-glyph { width: 18px; height: 18px; color: var(--si-gold); }
+.si-quests__label { font: 15px/1 var(--si-display); }
+.si-quests__count { font-size: 12px; color: var(--si-text-dim); }
+.si-quests__chevron { transition: transform 0.2s; }
+.si-quests--collapsed .si-quests__chevron { transform: rotate(-90deg); }
+.si-quests--collapsed .si-quests__list { display: none; }
+.si-quests__list { display: flex; flex-direction: column; gap: 6px; }
+.si-quest { padding: 8px 10px; border-left: 3px solid var(--si-sky); border-radius: 10px; background: rgba(12, 22, 42, 0.6); }
+.si-quest--ready { border-left-color: var(--si-gold); }
+.si-quest__name { margin-bottom: 3px; font: 14px/1.2 var(--si-display); }
+.si-quest__obj { display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; color: var(--si-text-dim); }
+.si-quest__obj--done { color: var(--si-good); }
+.si-quest__num { font-variant-numeric: tabular-nums; }
+.si-quest__ready { font-size: 12.5px; color: var(--si-gold); }
+.si-quest--flash { animation: si-flash 0.9s ease-out; }
+@keyframes si-flash { 0% { background: rgba(255, 211, 107, 0.45); } 100% { background: rgba(12, 22, 42, 0.6); } }
+
+/* ============ 채팅 ============ */
+.si-chat { display: flex; flex-direction: column; gap: 6px; width: 340px; padding: 8px; background: rgba(12, 22, 42, 0.5); }
+.si-chat__log {
+  display: flex; flex-direction: column; gap: 2px; height: 132px; padding-right: 4px; overflow-y: auto;
+  font-size: 13px; scrollbar-width: thin; -webkit-user-select: text; user-select: text;
+}
+.si-chat__msg { overflow-wrap: anywhere; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65); }
+.si-chat__from { font-weight: 700; color: var(--si-sky); }
+.si-chat__msg--system { color: var(--si-gold); }
+.si-chat__msg--whisper .si-chat__text { color: #e3b5ff; }
+.si-chat__form { display: flex; gap: 6px; }
+.si-chat__input {
+  flex: 1; min-width: 0; height: 34px; padding: 0 12px; border: 1px solid var(--si-panel-line); border-radius: 10px;
+  outline: none; background: rgba(0, 0, 0, 0.35); color: var(--si-text); font: inherit; -webkit-user-select: text; user-select: text;
+}
+.si-chat__input::placeholder { color: rgba(184, 196, 218, 0.7); }
+.si-chat__input:focus { border-color: var(--si-sky); background: rgba(0, 0, 0, 0.55); }
+.si-chat__send { flex: none; width: 34px; height: 34px; padding: 8px; border: 0; border-radius: 10px; background: var(--si-sky); color: #10203d; cursor: pointer; }
+.si-chat__close { display: none; }
+
+/* ============ 스킬 ============ */
+.si-skills { position: absolute; bottom: calc(28px + var(--si-safe-b)); left: 50%; transform: translateX(-50%); display: flex; align-items: flex-end; gap: 10px; }
+.si-skill {
+  position: relative; overflow: hidden; width: var(--si-skill); height: var(--si-skill); padding: 0;
+  border: 2px solid rgba(255, 233, 190, 0.45); border-radius: 16px;
+  background: radial-gradient(circle at 50% 30%, #2d4a7d, #142443);
+  box-shadow: var(--si-shadow), inset 0 2px 0 rgba(255, 255, 255, 0.12);
+  cursor: pointer; touch-action: none; transition: transform 0.08s;
+}
+.si-skill:hover { border-color: var(--si-gold); }
+.si-skill--basic { width: var(--si-skill-basic); height: var(--si-skill-basic); border-color: var(--si-gold); }
+.si-skill__icon { position: absolute; inset: 18%; }
+.si-skill--basic .si-skill__icon { inset: 17%; }
+.si-skill--pressed { transform: scale(0.92); }
+.si-skill__cd { --cd: 0deg; position: absolute; inset: 0; background: conic-gradient(rgba(6, 12, 28, 0.74) var(--cd), transparent 0); }
+.si-skill__cdtext { position: absolute; inset: 0; display: grid; place-items: center; font: 20px/1 var(--si-display); text-shadow: 0 2px 3px rgba(0, 0, 0, 0.85); }
+.si-skill__key { position: absolute; top: 4px; left: 5px; font: 11px/1 var(--si-display); color: var(--si-gold); text-shadow: 0 1px 2px #000; }
+.si-skill__count { position: absolute; right: 6px; bottom: 4px; font: 13px/1 var(--si-display); text-shadow: 0 1px 2px #000; }
+.si-skill__lock {
+  position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+  background: rgba(6, 12, 28, 0.72); font: 12px/1 var(--si-display); color: var(--si-text-dim);
+}
+.si-skill__lock .si-glyph { width: 18px; height: 18px; }
+.si-skill--locked .si-skill__lock { display: flex; }
+.si-skill--locked { border-color: rgba(255, 255, 255, 0.18); }
+.si-skill--empty .si-skill__icon { opacity: 0.35; filter: grayscale(1); }
+.si-skill--potion { margin-left: 10px; }
+.si-skill--ready { animation: si-ready 0.45s ease-out; }
+@keyframes si-ready { 0% { box-shadow: 0 0 0 0 rgba(255, 211, 107, 0.9); } 100% { box-shadow: 0 0 0 14px rgba(255, 211, 107, 0); } }
+
+/* ============ 경험치 ============ */
+.si-exp { position: absolute; right: 0; bottom: 0; left: 0; height: calc(14px + var(--si-safe-b)); background: rgba(6, 12, 28, 0.78); border-top: 1px solid rgba(255, 233, 190, 0.25); }
+.si-exp__fill { width: 0; height: 14px; background: linear-gradient(180deg, var(--si-exp-a), var(--si-exp-b)); box-shadow: 0 0 10px rgba(255, 211, 107, 0.5); transition: width 0.4s ease; }
+.si-exp__text { position: absolute; top: 0; right: 0; left: 0; display: grid; place-items: center; height: 14px; font: 10.5px/1 var(--si-display); letter-spacing: 0.04em; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95); white-space: pre; }
+
+/* ============ 획득 알림·배너·안내·피해 숫자 ============ */
+.si-loot { position: absolute; right: calc(var(--si-gap) + var(--si-safe-r)); bottom: calc(120px + var(--si-safe-b)); display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.si-loot__row {
+  display: flex; align-items: center; gap: 8px; padding: 4px 12px 4px 6px; border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(12, 22, 42, 0.82) 25%);
+  font-size: 13.5px; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7); animation: si-in-right 0.25s ease-out;
+}
+.si-loot__icon { display: grid; place-items: center; width: 26px; height: 26px; }
+.si-loot__name { color: var(--rc, var(--si-text)); }
+.si-loot__row[data-rarity='uncommon'] { --rc: var(--r-uncommon); }
+.si-loot__row[data-rarity='rare'] { --rc: var(--r-rare); }
+.si-loot__row[data-rarity='epic'] { --rc: var(--r-epic); }
+.si-loot__row[data-rarity='gold'], .si-loot__row[data-rarity='exp'] { --rc: var(--si-gold); }
+.si-loot__count { font: 14px/1 var(--si-display); font-variant-numeric: tabular-nums; }
+.si-loot__exp, .si-chip__exp { padding: 4px 3px; border-radius: 6px; background: var(--si-exp-a); color: #3a2400; font: 10px/1 var(--si-display); }
+.si-loot__row--bump { animation: si-bump 0.25s ease-out; }
+.si-loot__row--out { animation: si-out-right 0.4s ease-in forwards; }
+@keyframes si-in-right { from { opacity: 0; transform: translateX(24px); } }
+@keyframes si-out-right { to { opacity: 0; transform: translateX(24px); } }
+@keyframes si-bump { 50% { transform: scale(1.08); } }
+
+.si-center { position: absolute; top: 22%; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; width: max-content; max-width: calc(100% - 32px); }
+.si-banner { text-align: center; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.65); animation: si-out-banner 2.8s ease forwards; }
+.si-banner__title { font: 26px/1.15 var(--si-display); }
+.si-banner__sub { margin-top: 2px; font-size: 14px; color: var(--si-text-dim); }
+.si-banner--level { animation-duration: 3.2s; }
+.si-banner--level, .si-banner--island { padding: 14px 64px; background: radial-gradient(closest-side, rgba(12, 22, 42, 0.6), rgba(12, 22, 42, 0)); }
+.si-banner--level .si-banner__title { font-size: 42px; color: var(--si-gold); -webkit-text-stroke: 1px rgba(90, 50, 0, 0.45); }
+.si-banner--level .si-banner__sub { color: var(--si-text); }
+.si-banner--island .si-banner__title { font-size: 34px; letter-spacing: 0.08em; }
+.si-banner--quest { padding: 8px 26px; border-radius: 999px; background: linear-gradient(90deg, transparent, rgba(12, 22, 42, 0.78) 18% 82%, transparent); }
+.si-banner--quest .si-banner__title { font-size: 18px; color: var(--si-gold); }
+.si-banner--quest .si-banner__sub { color: var(--si-text); }
+@keyframes si-out-banner {
+  0% { opacity: 0; transform: translateY(10px) scale(0.96); }
+  10% { opacity: 1; transform: none; }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-8px); }
+}
+
+.si-alerts { position: absolute; bottom: calc(126px + var(--si-safe-b)); left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.si-alert { padding: 7px 16px; border: 1px solid var(--si-panel-line); border-radius: 999px; background: rgba(12, 22, 42, 0.88); font-size: 14px; white-space: nowrap; animation: si-out-alert 2.4s ease forwards; }
+.si-alert--error { border-color: rgba(255, 123, 123, 0.65); color: #ffd6d6; }
+@keyframes si-out-alert { 0% { opacity: 0; transform: translateY(6px); } 8% { opacity: 1; transform: none; } 85% { opacity: 1; } 100% { opacity: 0; } }
+
+.si-damage-layer { position: absolute; inset: 0; pointer-events: none; }
+.si-dmgtext {
+  position: absolute; transform: translate(-50%, -50%); font: 22px/1 var(--si-display); color: #fff; white-space: nowrap;
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.55); text-shadow: 0 2px 3px rgba(0, 0, 0, 0.6); animation: si-out-float 0.9s ease-out forwards;
+}
+.si-dmgtext--crit { font-size: 32px; color: var(--si-gold); }
+.si-dmgtext--self { color: #ff8a8a; }
+.si-dmgtext--heal { color: var(--si-good); }
+@keyframes si-out-float {
+  0% { opacity: 0; transform: translate(-50%, -30%) scale(0.6); }
+  15% { opacity: 1; transform: translate(-50%, -60%) scale(1.15); }
+  30% { transform: translate(-50%, -70%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -160%); }
+}
+
+/* ============ 버튼·칩 ============ */
+.si-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 40px; padding: 0 16px;
+  border: 1px solid var(--si-panel-line); border-radius: 12px; background: rgba(255, 255, 255, 0.08);
+  font: 15px/1 var(--si-display); cursor: pointer;
+}
+.si-button:hover { border-color: var(--si-gold); }
+.si-button .si-glyph { width: 18px; height: 18px; }
+.si-button--primary { border: 0; background: linear-gradient(180deg, #ffe08a, #f2b33d); color: #3a2400 !important; box-shadow: 0 3px 0 #b97d16; }
+.si-button--primary:active { transform: translateY(2px); box-shadow: 0 1px 0 #b97d16; }
+.si-button:disabled { opacity: 0.45; filter: grayscale(0.6); cursor: not-allowed; }
+.si-button--ghost { height: 34px; padding: 0 12px; font-size: 14px; }
+.si-chip { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px 0 4px; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 999px; background: rgba(0, 0, 0, 0.3); font-size: 13px; }
+.si-chip .si-glyph, .si-chip .si-icon-img { width: 22px; height: 22px; }
+.si-chip__exp { margin-left: 4px; }
+.si-chip[data-rarity='uncommon'] { border-color: var(--r-uncommon); }
+.si-chip[data-rarity='rare'] { border-color: var(--r-rare); }
+.si-chip[data-rarity='epic'] { border-color: var(--r-epic); }
+
+/* ============ 창 공통 ============ */
+.si-backdrop {
+  position: absolute; inset: 0; z-index: 5; display: grid; place-items: center;
+  padding: calc(16px + var(--si-safe-t)) calc(16px + var(--si-safe-r)) calc(16px + var(--si-safe-b)) calc(16px + var(--si-safe-l));
+  background: rgba(6, 12, 28, 0.35); animation: si-fade-in 0.15s ease-out;
+}
+.si-window {
+  position: relative; display: flex; flex-direction: column; max-width: 100%; max-height: 100%;
+  border: 1px solid rgba(255, 233, 190, 0.45); border-radius: 18px;
+  background: linear-gradient(180deg, rgba(38, 58, 100, 0.97), rgba(18, 30, 56, 0.97));
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  animation: si-pop 0.18s ease-out;
+}
+.si-window__head { display: flex; align-items: center; justify-content: space-between; padding: 12px 12px 8px 20px; }
+.si-window__title { margin: 0; font: 22px/1 var(--si-display); letter-spacing: 0.04em; color: var(--si-gold); }
+.si-window__close { width: 40px; height: 40px; padding: 10px; border: 0; border-radius: 12px; background: rgba(255, 255, 255, 0.06); color: var(--si-text-dim) !important; cursor: pointer; }
+.si-window__close:hover { background: rgba(255, 255, 255, 0.14); color: var(--si-text) !important; }
+.si-window__body { display: flex; gap: 18px; min-height: 0; padding: 4px 20px 20px; overflow: auto; }
+@keyframes si-pop { from { opacity: 0; transform: scale(0.96); } }
+@keyframes si-fade-in { from { opacity: 0; } }
+
+/* ============ 가방 ============ */
+.si-inv__equip { display: flex; flex: none; flex-direction: column; gap: 10px; width: 230px; }
+.si-inv__section { font: 14px/1 var(--si-display); letter-spacing: 0.06em; color: var(--si-text-dim); }
+.si-equip-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.si-equip { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.si-equip__label { font-size: 12px; color: var(--si-text-dim); }
+.si-stats { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; margin: 0; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.22); font-size: 13.5px; }
+.si-stats dt { color: var(--si-text-dim); }
+.si-stats dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.si-stats__gear { font-size: 12px; color: var(--si-good); }
+.si-inv__bag { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.si-grid { display: grid; grid-template-columns: repeat(6, var(--si-slot)); gap: 8px; }
+.si-inv__footer { display: flex; align-items: center; gap: 12px; }
+.si-gold { display: flex; align-items: center; gap: 6px; font: 16px/1 var(--si-display); color: var(--si-gold); }
+.si-gold .si-glyph { width: 22px; height: 22px; }
+.si-inv__cap { margin-left: auto; font-size: 13px; color: var(--si-text-dim); font-variant-numeric: tabular-nums; }
+.si-inv__cap--full { color: var(--si-bad); }
+
+.si-slot {
+  --rc: rgba(255, 255, 255, 0.14);
+  position: relative; width: var(--si-slot); height: var(--si-slot); padding: 8px;
+  border: 2px solid var(--rc); border-radius: 12px;
+  background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.28));
+  background: radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--rc) 24%, transparent), rgba(0, 0, 0, 0.28));
+  cursor: pointer; transition: transform 0.08s, border-color 0.12s;
+}
+.si-slot[data-rarity='common'] { --rc: var(--r-common); }
+.si-slot[data-rarity='uncommon'] { --rc: var(--r-uncommon); }
+.si-slot[data-rarity='rare'] { --rc: var(--r-rare); }
+.si-slot[data-rarity='epic'] { --rc: var(--r-epic); }
+.si-slot--empty { border-style: dashed; border-color: rgba(255, 255, 255, 0.12); background: rgba(0, 0, 0, 0.2); cursor: default; }
+.si-slot:not(.si-slot--empty):hover { transform: translateY(-1px); border-color: var(--si-gold); }
+.si-slot--selected { border-color: var(--si-gold) !important; box-shadow: 0 0 0 3px rgba(255, 211, 107, 0.35); }
+.si-slot--unusable::after { content: ''; position: absolute; inset: 0; border-radius: 10px; background: rgba(200, 40, 60, 0.3); }
+.si-slot__count { position: absolute; right: 4px; bottom: 2px; font: 13px/1 var(--si-display); text-shadow: 0 1px 2px #000; }
+.si-slot--equip { width: 64px; height: 64px; }
+
+.si-card {
+  position: absolute; z-index: 2; display: flex; flex-direction: column; gap: 8px; width: 264px; padding: 14px;
+  border: 1px solid rgba(255, 233, 190, 0.5); border-radius: 14px; background: rgba(14, 24, 46, 0.98);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5); pointer-events: auto; animation: si-fade-in 0.12s ease-out;
+}
+.si-card--preview { pointer-events: none; }
+.si-card__head { display: flex; align-items: center; gap: 12px; }
+.si-card__icon { flex: none; width: 48px; height: 48px; padding: 6px; cursor: default; }
+.si-card__name { font: 18px/1.15 var(--si-display); color: var(--nc, var(--si-text)); }
+.si-card__name[data-rarity='uncommon'] { --nc: var(--r-uncommon); }
+.si-card__name[data-rarity='rare'] { --nc: var(--r-rare); }
+.si-card__name[data-rarity='epic'] { --nc: var(--r-epic); }
+.si-card__meta { margin-top: 2px; font-size: 12px; color: var(--si-text-dim); }
+.si-card__req { font-size: 12.5px; color: var(--si-text-dim); }
+.si-card__req--bad { color: var(--si-bad); }
+.si-card__stats { display: flex; flex-direction: column; gap: 3px; padding: 8px 10px; border-radius: 10px; background: rgba(255, 255, 255, 0.05); }
+.si-card__stat { display: flex; align-items: baseline; gap: 8px; font-size: 13.5px; }
+.si-card__stat > span:first-child { flex: 1; color: var(--si-text-dim); }
+.si-card__diff { min-width: 58px; font-size: 12px; text-align: right; }
+.si-card__diff--up { color: var(--si-good); }
+.si-card__diff--down { color: var(--si-bad); }
+.si-card__use { font-size: 13.5px; color: var(--si-good); }
+.si-card__desc { margin: 0; font-size: 13px; line-height: 1.55; color: var(--si-text-dim); }
+.si-card__actions { display: flex; gap: 8px; margin-top: 2px; }
+.si-card__actions .si-button { flex: 1; }
+
+/* ============ NPC 대화 ============ */
+.si-dialog {
+  position: absolute; bottom: calc(30px + var(--si-safe-b)); left: 50%; z-index: 4; transform: translateX(-50%);
+  display: flex; flex-direction: column; gap: 10px; width: min(680px, calc(100% - 32px)); padding: 16px 18px 14px;
+  border-color: rgba(255, 233, 190, 0.5); background: linear-gradient(180deg, rgba(38, 58, 100, 0.96), rgba(18, 30, 56, 0.96));
+  animation: si-rise 0.2s ease-out;
+}
+@keyframes si-rise { from { opacity: 0; transform: translate(-50%, 12px); } }
+.si-dialog__head { display: flex; align-items: flex-start; justify-content: space-between; }
+.si-dialog__plate {
+  display: flex; align-items: baseline; gap: 10px; margin: -32px 0 0 -4px; padding: 7px 16px;
+  border-radius: 12px; background: var(--npc-color, #e9c46a); color: #2a1a00; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+.si-dialog__name { font: 20px/1 var(--si-display); }
+.si-dialog__npc-title { font-size: 12px; opacity: 0.8; }
+.si-dialog__close { width: 36px; height: 36px; margin: -6px -6px 0 0; padding: 9px; border: 0; border-radius: 10px; background: rgba(255, 255, 255, 0.06); color: var(--si-text-dim) !important; cursor: pointer; }
+.si-dialog__textbox { position: relative; min-height: 60px; cursor: pointer; }
+.si-dialog__quest { margin-bottom: 6px; font: 14px/1 var(--si-display); color: var(--si-gold); }
+.si-dialog__text { margin: 0; padding-right: 18px; font-size: 16.5px; line-height: 1.6; }
+.si-dialog__text--in { animation: si-fade-in 0.25s ease-out; }
+.si-dialog__next { position: absolute; right: 0; bottom: 0; color: var(--si-gold); animation: si-bob 1s ease-in-out infinite; }
+@keyframes si-bob { 50% { transform: translateY(3px); } }
+.si-dialog__rewards { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding-top: 8px; border-top: 1px dashed rgba(255, 233, 190, 0.25); }
+.si-dialog__rewards-label { margin-right: 4px; font: 13px/1 var(--si-display); color: var(--si-text-dim); }
+.si-dialog__options { display: flex; flex-direction: column; gap: 6px; }
+.si-dialog__opt {
+  display: flex; align-items: center; gap: 10px; min-height: 42px; padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; background: rgba(255, 255, 255, 0.06);
+  font-size: 15px; text-align: left; cursor: pointer;
+}
+.si-dialog__opt:hover { border-color: var(--si-gold); background: rgba(255, 211, 107, 0.12); }
+.si-dialog__opt--primary { justify-content: center; border: 0; background: linear-gradient(180deg, #ffe08a, #f2b33d); color: #3a2400 !important; font: 16px/1 var(--si-display); box-shadow: 0 3px 0 #b97d16; }
+.si-dialog__opt--primary:hover { background: linear-gradient(180deg, #ffe9a8, #f5bd52); }
+.si-dialog__opt--leave { color: var(--si-text-dim) !important; }
+.si-mark { display: inline-grid; flex: none; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: rgba(255, 255, 255, 0.12); font: 15px/1 var(--si-display); }
+.si-mark--new { background: var(--si-gold); color: #3a2400; }
+.si-mark--ready { background: var(--si-sky); color: #10203d; }
+
+/* 창이 열려 있을 때 겹치는 HUD를 숨긴다 */
+.si-skills, .si-loot, .si-area--bl, .si-alerts { transition: opacity 0.2s; }
+.si-root--dialog .si-skills, .si-root--dialog .si-loot, .si-root--dialog .si-area--bl, .si-root--dialog .si-top-center { opacity: 0; pointer-events: none; }
+.si-root--dialog .si-skills * , .si-root--dialog .si-area--bl * { pointer-events: none; }
+
+/* ============ 세로 화면 안내 (폰) ============ */
+.si-rotate { position: absolute; inset: 0; z-index: 20; display: none; place-items: center; background: #13213d; pointer-events: auto; }
+.si-rotate__box { display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 24px; font: 18px/1.3 var(--si-display); text-align: center; }
+.si-rotate__phone { width: 44px; height: 76px; border: 4px solid var(--si-text); border-radius: 10px; animation: si-rotate 2s ease-in-out infinite; }
+@keyframes si-rotate { 0%, 20% { transform: rotate(0); } 50%, 80% { transform: rotate(-90deg); } 100% { transform: rotate(0); } }
+@media (orientation: portrait) and (max-width: 600px) {
+  .si-root[data-input='touch'] .si-rotate { display: grid; }
+}
+
+/* ============ 터치 화면 (아이패드·폰) ============ */
+/* 왼쪽 아래는 엔진(A)의 가상 조이스틱 자리로 비워 둔다. */
+.si-root[data-input='touch'] { --si-skill: 60px; --si-skill-basic: 84px; }
+.si-root[data-input='touch'] .si-skills { top: auto; right: calc(14px + var(--si-safe-r)); bottom: calc(26px + var(--si-safe-b)); left: auto; display: block; width: 240px; height: 230px; transform: none; }
+.si-root[data-input='touch'] .si-skill { position: absolute; margin: 0; border-radius: 50%; }
+.si-root[data-input='touch'] .si-skill__key { display: none; }
+.si-root[data-input='touch'] .si-skill--basic { right: 0; bottom: 0; }
+.si-root[data-input='touch'] .si-skill--s1 { right: 112px; bottom: 12px; }
+.si-root[data-input='touch'] .si-skill--s2 { right: 83px; bottom: 83px; }
+.si-root[data-input='touch'] .si-skill--s3 { right: 12px; bottom: 112px; }
+.si-root[data-input='touch'] .si-skill--potion { right: 184px; bottom: 4px; width: 50px; height: 50px; }
+.si-root[data-input='touch'] .si-loot { bottom: calc(272px + var(--si-safe-b)); }
+.si-root[data-input='touch'] .si-alerts { bottom: calc(40px + var(--si-safe-b)); }
+.si-root[data-input='touch'] .si-chat { display: none; }
+.si-root[data-input='touch'] .si-chat.si-chat--open {
+  position: fixed; top: 50%; left: calc(12px + var(--si-safe-l)); z-index: 6; display: flex;
+  width: min(380px, calc(100% - 24px)); transform: translateY(-50%); background: var(--si-panel-strong);
+}
+.si-root[data-input='touch'] .si-chat__close { position: absolute; top: 6px; right: 6px; display: grid; width: 32px; height: 32px; padding: 8px; border: 0; border-radius: 8px; background: rgba(255, 255, 255, 0.08); }
+.si-root[data-input='touch'] .si-chat__log { height: 170px; margin-top: 30px; }
+.si-root[data-input='touch'] .si-chat__input { height: 40px; font-size: 16px; } /* 16px 미만이면 아이폰이 화면을 확대한다 */
+.si-root[data-input='touch'] .si-chat__send { width: 40px; height: 40px; }
+.si-root[data-input='touch'] .si-quests { width: 220px; }
+
+/* ============ 낮은 화면 (폰 가로) ============ */
+@media (max-height: 500px) {
+  .si-root { --si-gap: 8px; --si-slot: 46px; font-size: 13px; }
+  .si-player { gap: 8px; min-width: 220px; padding: 6px 10px 6px 6px; }
+  .si-portrait-wrap { width: 44px; height: 44px; }
+  .si-portrait { padding: 8px; }
+  .si-portrait__level { min-width: 22px; height: 22px; font-size: 14px; line-height: 18px; }
+  .si-player__name { font-size: 15px; }
+  .si-bar { height: 15px; }
+  .si-menu__btn { width: 44px; height: 44px; padding: 7px 9px 15px; }
+  .si-menu__label { bottom: 3px; font-size: 9px; }
+  .si-location__name { font-size: 15px; }
+  .si-quests, .si-root[data-input='touch'] .si-quests { width: 196px; }
+  .si-quest { padding: 5px 8px; }
+  .si-target { min-width: 190px; padding: 6px 10px 8px; }
+  .si-bossbar { width: max(220px, min(480px, calc(100vw - 480px))); }
+  .si-bossbar__name { font-size: 18px; }
+  .si-center { top: 14%; }
+  .si-banner--level .si-banner__title { font-size: 30px; }
+  .si-banner--island .si-banner__title { font-size: 26px; }
+  .si-root[data-input='touch'] { --si-skill: 52px; --si-skill-basic: 72px; }
+  .si-root[data-input='touch'] .si-skills { bottom: calc(20px + var(--si-safe-b)); width: 210px; height: 200px; }
+  .si-root[data-input='touch'] .si-skill--s1 { right: 96px; bottom: 10px; }
+  .si-root[data-input='touch'] .si-skill--s2 { right: 71px; bottom: 71px; }
+  .si-root[data-input='touch'] .si-skill--s3 { right: 10px; bottom: 96px; }
+  .si-root[data-input='touch'] .si-skill--potion { right: 160px; bottom: 2px; width: 44px; height: 44px; }
+  .si-root[data-input='touch'] .si-loot { bottom: calc(228px + var(--si-safe-b)); }
+  .si-root[data-input='touch'] .si-chat__log { height: 120px; }
+  .si-dialog { bottom: calc(20px + var(--si-safe-b)); gap: 8px; padding: 12px 14px 10px; }
+  .si-dialog__text { font-size: 15px; line-height: 1.5; }
+  .si-dialog__opt { min-height: 38px; }
+  .si-window__head { padding: 8px 8px 4px 16px; }
+  .si-window__title { font-size: 19px; }
+  .si-window__close { width: 36px; height: 36px; padding: 9px; }
+  .si-window__body { gap: 12px; padding: 2px 14px 14px; }
+  .si-inv__equip { gap: 8px; width: 190px; }
+  .si-slot--equip { width: 54px; height: 54px; }
+  .si-stats { gap: 3px 10px; padding: 8px 10px; font-size: 12.5px; }
+  .si-grid { gap: 6px; }
+}
+
+/* ============ 좁은 화면 ============ */
+@media (max-width: 640px) {
+  .si-window__body { flex-direction: column; }
+  .si-inv__equip { width: auto; }
+  .si-player { min-width: 0; }
+  .si-quests { display: none; }
+  .si-bossbar { width: calc(100vw - 32px); }
+}
+
+/* ============ 엔진 연결 후 추가 (B/ui-v01) ============ */
+/* 시작 화면 */
+.si-screen { position: absolute; inset: 0; z-index: 8; display: grid; place-items: center; padding: 16px;
+  background: radial-gradient(ellipse at 50% 40%, rgba(18, 30, 56, 0.25), rgba(6, 12, 28, 0.6)); }
+.si-login { display: flex; flex-direction: column; align-items: center; gap: 12px; width: min(380px, 100%); padding: 26px 24px 22px;
+  background: linear-gradient(180deg, rgba(38, 58, 100, 0.95), rgba(18, 30, 56, 0.95)); border-color: rgba(255, 233, 190, 0.45); animation: si-pop 0.2s ease-out; }
+.si-login__logo { width: 56px; height: 56px; padding: 11px; border-radius: 50%; border: 2px solid var(--si-gold);
+  background: radial-gradient(circle at 35% 30%, #8fb5ff, #5b8def 60%, #2f5bb0); color: #fff; }
+.si-login__title { margin: 0; font: 30px/1.1 var(--si-display); letter-spacing: 0.04em; color: var(--si-gold); text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); }
+.si-login__sub { margin: 0; font-size: 13px; line-height: 1.55; text-align: center; color: var(--si-text-dim); }
+.si-login__badge { padding: 3px 10px; border-radius: 99px; background: #8a5a12; font: 12px/1.4 var(--si-display); }
+.si-login__badge--on { background: #1f8a4c; }
+.si-login__form { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 4px; }
+.si-login__submit { width: 100%; height: 44px; font-size: 17px; }
+.si-login__error { min-height: 18px; font-size: 13px; text-align: center; color: #ffb4b4; }
+.si-login__profiles { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+.si-login__class { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; padding: 10px 12px; border-radius: 12px;
+  background: rgba(0, 0, 0, 0.22); border-left: 4px solid var(--class-color, #5b8def); }
+.si-login__class-name { font: 20px/1.2 var(--si-display); }
+.si-input { width: 100%; height: 44px; padding: 0 14px; border: 1px solid var(--si-panel-line); border-radius: 12px; outline: none;
+  background: rgba(0, 0, 0, 0.3); color: var(--si-text); font: 16px var(--si-font); -webkit-user-select: text; user-select: text; }
+.si-input:focus { border-color: var(--si-sky); background: rgba(0, 0, 0, 0.45); }
+.si-tabs { display: flex; gap: 6px; }
+.si-tab { flex: 1; height: 36px; border: 1px solid var(--si-panel-line); border-radius: 10px; background: rgba(255, 255, 255, 0.06);
+  color: var(--si-text-dim) !important; font: 15px/1 var(--si-display); cursor: pointer; }
+.si-tab--on { border-color: var(--si-gold); background: rgba(255, 211, 107, 0.15); color: var(--si-gold) !important; }
+
+/* 내 정보: 골드 */
+.si-player__gold { display: flex; align-items: center; gap: 4px; font: 13px/1 var(--si-display); color: var(--si-gold); }
+.si-player__gold .si-glyph { width: 16px; height: 16px; }
+
+/* 위치 밑 접속·저장 상태 */
+.si-location__status { margin-top: 2px; font-size: 11px; color: var(--si-text-dim); }
+.si-menu__buttons { flex-wrap: wrap; justify-content: flex-end; }
+
+/* 스킬 이름 (PC 스킬바) */
+.si-skill__name { position: absolute; right: 0; bottom: 3px; left: 0; overflow: hidden; padding: 0 2px; font: 10px/1 var(--si-display);
+  text-align: center; white-space: nowrap; text-overflow: ellipsis; text-shadow: 0 1px 2px #000; }
+.si-skill__icon { inset: 14% 18% 26%; }
+.si-skill--basic .si-skill__icon { inset: 14% 18% 24%; }
+.si-skill--potion .si-skill__icon { inset: 18%; }
+
+/* NPC 가까이 갔을 때 안내 */
+.si-hint { position: absolute; bottom: calc(118px + var(--si-safe-b)); left: 50%; transform: translateX(-50%); padding: 7px 16px;
+  font: 15px/1.2 var(--si-display); white-space: pre; }
+
+/* 쓰러짐 */
+.si-death { position: absolute; inset: 0; z-index: 3; display: grid; place-items: center; padding: 24px; background: rgba(110, 20, 30, 0.35);
+  font: 24px/1.4 var(--si-display); text-align: center; text-shadow: 0 2px 6px #000; }
+
+/* 도움말 */
+.si-help .si-window__body { flex-direction: column; gap: 10px; max-width: 520px; }
+.si-help__table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.si-help__table th { padding: 6px 12px 6px 0; font: 14px/1.3 var(--si-display); color: var(--si-sky); text-align: left; white-space: nowrap; vertical-align: top; }
+.si-help__table td { padding: 6px 0; }
+.si-help__table tr + tr { border-top: 1px solid rgba(255, 255, 255, 0.08); }
+.si-help__tip { margin: 0; font-size: 12.5px; color: var(--si-text-dim); }
+
+/* 채팅: 내 글 */
+.si-chat__msg--self .si-chat__from { color: var(--si-gold); }
+
+/* 터치 화면: 공격·스킬 버튼은 엔진이 그리므로 우리 스킬바는 숨긴다 */
+.si-root[data-input='touch'] .si-skills { display: none; }
+.si-root[data-input='touch'] .si-loot { bottom: calc(240px + var(--si-safe-b)); }
+.si-root[data-input='touch'] .si-alerts { bottom: calc(200px + var(--si-safe-b)); }
+.si-root[data-input='touch'] .si-menu__label { display: none; }
+.si-root[data-input='touch'] .si-menu__btn { padding: 10px; }
+@media (max-height: 500px) {
+  .si-login { gap: 8px; padding: 16px 20px; }
+  .si-login__logo { display: none; }
+  .si-login__title { font-size: 24px; }
+  .si-input, .si-login__submit { height: 40px; }
+}
+/* 터치 화면: 오른쪽은 엔진의 공격·스킬 버튼 자리라서 퀘스트 목록은 왼쪽 위로, 시점 버튼은 엔진 것만 쓴다 */
+.si-root[data-input='touch'] .si-quests { position: fixed; top: calc(112px + var(--si-safe-t)); left: calc(var(--si-gap) + var(--si-safe-l)); width: 210px; margin: 0; }
+.si-root[data-input='touch'] .si-quests__head { justify-content: flex-start; }
+.si-root[data-input='touch'] .si-menu__btn[aria-label='시점'] { display: none; }
+.si-root[data-input='touch'] .si-location__status { display: none; }
+@media (max-height: 500px) {
+  .si-root[data-input='touch'] .si-quests { top: calc(86px + var(--si-safe-t)); width: 190px; }
+  .si-root[data-input='touch'] .si-menu__btn { width: 40px; height: 40px; padding: 9px; }
+  .si-root[data-input='touch'] .si-location { padding: 3px 8px; }
+}
+/* 아이콘 그림 (Gemini) */
+.si-login__portrait { width: 72px; height: 72px; border: 2px solid var(--si-gold); }
+.si-skill__icon .si-icon-img { filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35)); }
+.si-slot .si-icon-img, .si-loot__icon .si-icon-img { filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4)); }

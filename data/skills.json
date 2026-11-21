@@ -1,10 +1,53 @@
 [
   {
-    "id": "slash",
-    "name": "베기",
-    "class": "warrior",
-    "cooldownSec": 1.5,
+    "id": "gale-dash",
+    "icon": "skills/gale-dash.png",
+    "class": "windblade",
+    "name": "질풍베기",
+    "description": "바람을 타고 앞으로 돌진하며 지나가는 길의 적을 벤다.",
+    "cooldownSec": 5,
+    "damageMultiplier": 1.8,
+    "shape": "line",
+    "range": 6,
+    "width": 1.6,
+    "dashDistance": 6,
+    "castSec": 0.15,
+    "recoverSec": 0.25,
+    "anim": "thrust",
+    "color": "#8fe3ff"
+  },
+  {
+    "id": "whirlwind",
+    "icon": "skills/whirlwind.png",
+    "class": "windblade",
+    "name": "회오리베기",
+    "description": "제자리에서 회전하며 주변의 적을 세 번 벤다.",
+    "cooldownSec": 9,
     "damageMultiplier": 1.2,
-    "range": 2.5
+    "shape": "circle",
+    "range": 3.2,
+    "hits": 3,
+    "hitIntervalSec": 0.3,
+    "castSec": 0.15,
+    "recoverSec": 0.3,
+    "anim": "spin",
+    "color": "#b6f0c8"
+  },
+  {
+    "id": "sky-cleave",
+    "icon": "skills/sky-cleave.png",
+    "class": "windblade",
+    "name": "하늘 가르기",
+    "description": "검에 바람을 모아 앞쪽 넓은 범위를 강하게 내려친다. 맞은 적은 멀리 밀려난다.",
+    "cooldownSec": 12,
+    "damageMultiplier": 2.6,
+    "shape": "arc",
+    "range": 3.6,
+    "angleDeg": 160,
+    "castSec": 0.35,
+    "recoverSec": 0.35,
+    "knockback": 1.4,
+    "anim": "slam",
+    "color": "#ffe08a"
   }
 ]
