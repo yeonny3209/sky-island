@@ -1,0 +1,14 @@
+[
+  {
+    "id": "slime-jelly",
+    "name": "슬라임 젤리",
+    "type": "material",
+    "description": "말랑한 젤리. 재료로 쓴다."
+  },
+  {
+    "id": "wooden-sword",
+    "name": "나무 검",
+    "type": "weapon",
+    "stats": { "attack": 2 }
+  }
+]

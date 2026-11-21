@@ -1,0 +1,10 @@
+[
+  {
+    "id": "slash",
+    "name": "베기",
+    "class": "warrior",
+    "cooldownSec": 1.5,
+    "damageMultiplier": 1.2,
+    "range": 2.5
+  }
+]

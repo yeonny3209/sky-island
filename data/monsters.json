@@ -1,0 +1,11 @@
+[
+  {
+    "id": "slime",
+    "name": "하늘 슬라임",
+    "island": "hunting-1",
+    "maxHp": 30,
+    "attack": 3,
+    "exp": 5,
+    "drops": [{ "itemId": "slime-jelly", "chance": 0.5 }]
+  }
+]

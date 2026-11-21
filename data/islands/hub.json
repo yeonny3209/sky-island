@@ -1,0 +1,7 @@
+{
+  "id": "hub",
+  "name": "허브 마을",
+  "type": "hub",
+  "spawnPoint": { "x": 0, "y": 1, "z": 0 },
+  "connectsTo": ["hunting-1"]
+}
