@@ -1,0 +1,117 @@
+[
+  {
+    "id": "welcome",
+    "name": "새 바람이 분다",
+    "giver": "hani",
+    "turnIn": "solgae",
+    "requires": { "level": 1 },
+    "summary": "선착장의 비행선 조종사 솔개에게 인사하자.",
+    "objectives": [{ "type": "talk", "target": "solgae", "count": 1 }],
+    "rewards": { "exp": 10, "gold": 10, "items": [{ "itemId": "small-potion", "count": 3 }] },
+    "dialogue": {
+      "offer": [
+        "어서 오렴, 새 바람아. 바람개비 마을에 온 걸 환영한다.",
+        "섬 밖으로 나가려면 비행선을 타야 해. 북쪽 선착장에 있는 솔개에게 인사부터 하렴."
+      ],
+      "progress": ["솔개는 마을 북쪽 선착장에 있단다. 바람개비가 가리키는 쪽으로 가 보렴."],
+      "complete": [
+        "하늬 할머니가 보내셨구나! 반가워, 난 솔개야.",
+        "초원섬까지는 언제든 태워 줄게. 가는 길에 쓰라고 물약도 좀 챙겨 줄게!"
+      ]
+    }
+  },
+  {
+    "id": "slime-cleanup",
+    "name": "이슬 슬라임 소동",
+    "giver": "solgae",
+    "turnIn": "solgae",
+    "requires": { "quests": ["welcome"] },
+    "summary": "산들 초원섬 선착장 근처의 이슬 슬라임 6마리를 처치하자.",
+    "objectives": [{ "type": "kill", "target": "dew-slime", "count": 6 }],
+    "rewards": { "exp": 40, "gold": 20 },
+    "dialogue": {
+      "offer": [
+        "요즘 초원섬 선착장에 슬라임이 잔뜩 몰려들어서 배를 대기가 힘들어.",
+        "여섯 마리만 정리해 줄래? 선착장 앞 들판에 모여 있을 거야."
+      ],
+      "progress": ["슬라임은 말랑해 보여도 몸통 박치기가 은근히 아파. 조심해!"],
+      "complete": [
+        "와, 선착장이 깨끗해졌어! 이제 마음 놓고 배를 댈 수 있겠다.",
+        "이거 받아. 조종사 월급이 많진 않지만 말이야."
+      ]
+    }
+  },
+  {
+    "id": "mushroom-soup",
+    "name": "버섯 수프 잔치",
+    "giver": "hani",
+    "turnIn": "hani",
+    "requires": { "level": 2, "quests": ["slime-cleanup"] },
+    "summary": "깡총버섯 갓 5개를 모아 하늬에게 가져가자.",
+    "objectives": [{ "type": "collect", "target": "mushroom-cap", "count": 5 }],
+    "consumeOnComplete": true,
+    "rewards": { "exp": 80, "gold": 30, "items": [{ "itemId": "leather-armor", "count": 1 }] },
+    "dialogue": {
+      "offer": [
+        "오늘 저녁엔 마을 사람들과 버섯 수프를 끓이려고 한단다.",
+        "초원섬 깡총버섯의 갓이 아주 맛있지. 다섯 개만 구해다 주겠니? 녀석들이 들이받으니 조심하고."
+      ],
+      "progress": ["버섯 갓 다섯 개면 마을 사람 모두 한 그릇씩 먹을 수 있단다."],
+      "complete": [
+        "어머, 탱탱한 것만 골라 왔구나! 수프 맛이 끝내주겠어.",
+        "이건 우리 영감이 젊을 때 입던 갑옷이란다. 이제 너한테 더 잘 어울리겠구나."
+      ]
+    }
+  },
+  {
+    "id": "boar-tusks",
+    "name": "엄니 대장간",
+    "giver": "musoe",
+    "turnIn": "musoe",
+    "requires": { "level": 4, "quests": ["mushroom-soup"] },
+    "summary": "바람 멧돼지 엄니 4개를 모아 대장장이 무쇠에게 가져가자.",
+    "objectives": [{ "type": "collect", "target": "boar-tusk", "count": 4 }],
+    "consumeOnComplete": true,
+    "rewards": { "exp": 150, "gold": 40, "items": [{ "itemId": "iron-sword", "count": 1 }] },
+    "dialogue": {
+      "offer": [
+        "…아직 나무 검으로 버티고 있나? 그걸론 멧돼지 가죽도 못 뚫는다.",
+        "바람 멧돼지 엄니 네 개를 가져와. 쇠에 녹여 넣으면 제대로 된 검이 나온다."
+      ],
+      "progress": ["멧돼지는 달려들기 전에 앞발로 땅을 긁는다. 그때 옆으로 피해."],
+      "complete": [
+        "좋은 엄니다. 잠깐 기다려.",
+        "…땅! 땅! 됐다. 무쇠 검이다. 아껴 써라."
+      ]
+    }
+  },
+  {
+    "id": "meadow-guardian",
+    "name": "초원의 수호자",
+    "giver": "hani",
+    "turnIn": "hani",
+    "requires": { "level": 6, "quests": ["boar-tusks"] },
+    "summary": "산들 초원섬 북쪽 유적의 이끼 골렘을 쓰러뜨리자.",
+    "objectives": [{ "type": "kill", "target": "moss-golem", "count": 1 }],
+    "rewards": {
+      "exp": 300,
+      "gold": 100,
+      "items": [
+        { "itemId": "sky-pendant", "count": 1 },
+        { "itemId": "medium-potion", "count": 3 }
+      ]
+    },
+    "dialogue": {
+      "offer": [
+        "요즘 초원섬 북쪽 유적에서 땅이 울린다는구나. 오래 잠들어 있던 이끼 골렘이 깨어난 모양이야.",
+        "골렘은 원래 섬을 지키던 수호자였지만, 지금은 아무나 공격하고 있단다. 네가 잠재워 주겠니?",
+        "바닥에 붉은 원이 번지면 곧 내려찍는다는 뜻이야. 그때는 재빨리 빠져나오렴."
+      ],
+      "progress": ["골렘은 체력이 반쯤 줄면 이끼 씨앗을 뿌린다더구나. 슬라임이 튀어나와도 당황하지 말고."],
+      "complete": [
+        "네가 정말 해냈구나! 초원에 다시 고요한 바람이 분다.",
+        "이 펜던트는 섬의 수호자를 잠재운 이에게만 주는 거란다. 다음 섬으로 가는 바람도 곧 불어올 거야."
+      ]
+    }
+  }
+]

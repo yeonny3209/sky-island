@@ -1,7 +1,49 @@
 {
   "id": "hub",
-  "name": "허브 마을",
+  "name": "바람개비 마을",
   "type": "hub",
-  "spawnPoint": { "x": 0, "y": 1, "z": 0 },
-  "connectsTo": ["hunting-1"]
+  "description": "구름 위에 떠 있는 작은 마을. 언제나 바람개비가 돌고, 모험가들이 비행선을 기다린다.",
+  "radius": 22,
+  "spawnPoint": { "x": 0, "y": 1, "z": 6 },
+  "connectsTo": ["hunting-1"],
+  "theme": {
+    "ground": "#8fd16a",
+    "dirt": "#b08a64",
+    "rock": "#8d8a84",
+    "skyTop": "#5fb4f2",
+    "skyHorizon": "#f3fbff",
+    "fog": "#d7efff"
+  },
+  "npcs": [
+    { "id": "hani", "name": "하늬", "x": 0, "z": -1.5, "color": "#e9c46a" },
+    { "id": "musoe", "name": "무쇠", "x": 7.3, "z": 0, "color": "#8d99ae" },
+    { "id": "solgae", "name": "솔개", "x": -2, "z": -15.5, "color": "#e76f51" }
+  ],
+  "portals": [{ "to": "hunting-1", "x": 0, "z": -19.5 }],
+  "props": [
+    { "type": "house", "x": -6.6, "z": 3.7, "rotY": 1.57 },
+    { "type": "house", "x": 6.6, "z": 6.2, "rotY": -1.57 },
+    { "type": "house", "x": -8.8, "z": -11, "rotY": 0.78 },
+    { "type": "house", "x": 10.6, "z": 1.5, "rotY": -1.57 },
+    { "type": "well", "x": -3.4, "z": -3.4 },
+    { "type": "lamp", "x": 2.2, "z": 3 },
+    { "type": "lamp", "x": -2.2, "z": 3 },
+    { "type": "lamp", "x": 2, "z": -10.3 },
+    { "type": "lamp", "x": -2, "z": -18 },
+    { "type": "sign", "x": 1.6, "z": 8.5 },
+    { "type": "tree", "x": -16, "z": 5.9 },
+    { "type": "tree", "x": -14.7, "z": 10.3, "scale": 0.9 },
+    { "type": "tree", "x": 16, "z": 7.3 },
+    { "type": "tree", "x": 13.2, "z": 13.2, "scale": 1.1 },
+    { "type": "pine", "x": -17.6, "z": -3 },
+    { "type": "pine", "x": 17.6, "z": -1.5 },
+    { "type": "pine", "x": -4.4, "z": 15.5, "scale": 0.9 },
+    { "type": "pine", "x": 5.9, "z": 16 },
+    { "type": "bush", "x": 14.7, "z": -13.2 },
+    { "type": "bush", "x": -13.2, "z": -14.7 },
+    { "type": "flower", "x": -4.4, "z": 5.6 },
+    { "type": "flower", "x": 4.4, "z": 4.4 },
+    { "type": "flower", "x": -1.5, "z": -6 },
+    { "type": "flower", "x": 3.7, "z": -4.4 }
+  ]
 }

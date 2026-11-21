@@ -1,14 +1,30 @@
 [
-  {
-    "id": "slime-jelly",
-    "name": "슬라임 젤리",
-    "type": "material",
-    "description": "말랑한 젤리. 재료로 쓴다."
-  },
-  {
-    "id": "wooden-sword",
-    "name": "나무 검",
-    "type": "weapon",
-    "stats": { "attack": 2 }
-  }
+  { "id": "wooden-sword", "name": "나무 검", "type": "weapon", "rarity": "common", "levelReq": 1, "stats": { "attack": 3 }, "price": 5, "color": "#c8995c",
+    "description": "연습용으로 깎은 단단한 참나무 검." },
+  { "id": "iron-sword", "name": "무쇠 검", "type": "weapon", "rarity": "uncommon", "levelReq": 4, "stats": { "attack": 8 }, "price": 40, "color": "#b8c4cf",
+    "description": "대장장이 무쇠가 멧돼지 엄니를 녹여 넣어 두드린 검. 묵직하고 믿음직하다." },
+  { "id": "gale-sword", "name": "질풍검", "type": "weapon", "rarity": "rare", "levelReq": 7, "stats": { "attack": 15, "critRate": 0.05 }, "price": 150, "color": "#7fe0d8",
+    "description": "이끼 골렘의 몸속에서 나온 푸른 검. 휘두를 때마다 바람 소리가 난다." },
+  { "id": "cloth-tunic", "name": "무명 튜닉", "type": "armor", "rarity": "common", "levelReq": 1, "stats": { "defense": 2, "maxHp": 10 }, "price": 5, "color": "#e8dcc2",
+    "description": "바람개비 마을 사람들이 즐겨 입는 가벼운 옷." },
+  { "id": "leather-armor", "name": "가죽 갑옷", "type": "armor", "rarity": "uncommon", "levelReq": 3, "stats": { "defense": 6, "maxHp": 30 }, "price": 35, "color": "#a8714a",
+    "description": "질긴 가죽을 여러 겹 덧댄 갑옷. 슬라임 박치기 정도는 거뜬하다." },
+  { "id": "golem-plate", "name": "이끼 골렘 흉갑", "type": "armor", "rarity": "rare", "levelReq": 7, "stats": { "defense": 14, "maxHp": 80 }, "price": 150, "color": "#7fa36b",
+    "description": "골렘의 바위 껍질을 다듬은 흉갑. 이끼가 아직 살아 있어 따뜻하다." },
+  { "id": "feather-charm", "name": "깃털 부적", "type": "accessory", "rarity": "uncommon", "levelReq": 4, "stats": { "moveSpeed": 0.4, "critRate": 0.03 }, "price": 45, "color": "#f2f0e6",
+    "description": "하늘새의 깃털을 엮은 부적. 몸이 한결 가벼워진다." },
+  { "id": "sky-pendant", "name": "하늘빛 펜던트", "type": "accessory", "rarity": "rare", "levelReq": 7, "stats": { "maxHp": 50, "attack": 4 }, "price": 120, "color": "#7cc8ff",
+    "description": "초원의 수호자를 쓰러뜨린 이에게 하늬가 건네는 펜던트. 맑은 하늘빛으로 빛난다." },
+  { "id": "small-potion", "name": "작은 회복 물약", "type": "consumable", "rarity": "common", "effect": { "heal": 40 }, "maxStack": 20, "price": 3, "color": "#ff7a7a",
+    "description": "체력을 40 회복한다. 딸기맛이 난다." },
+  { "id": "medium-potion", "name": "회복 물약", "type": "consumable", "rarity": "uncommon", "effect": { "heal": 120 }, "maxStack": 20, "price": 12, "color": "#ff4f6d",
+    "description": "체력을 120 회복한다. 진한 석류맛이 난다." },
+  { "id": "slime-jelly", "name": "이슬 젤리", "type": "material", "rarity": "common", "maxStack": 99, "price": 1, "color": "#8fe3ff",
+    "description": "이슬 슬라임이 남긴 말랑한 젤리. 햇빛에 비추면 무지개가 보인다." },
+  { "id": "mushroom-cap", "name": "깡총버섯 갓", "type": "material", "rarity": "common", "maxStack": 99, "price": 2, "color": "#e86a5a",
+    "description": "탱탱한 버섯 갓. 수프에 넣으면 맛이 깊어진다." },
+  { "id": "boar-tusk", "name": "멧돼지 엄니", "type": "material", "rarity": "common", "maxStack": 99, "price": 4, "color": "#f1e6cf",
+    "description": "바람 멧돼지의 단단한 엄니. 대장장이들이 탐낸다." },
+  { "id": "moss-core", "name": "이끼 핵", "type": "material", "rarity": "rare", "maxStack": 99, "price": 30, "color": "#6ccf7a",
+    "description": "이끼 골렘의 심장에서 떨어진 초록 돌. 희미하게 맥박이 느껴진다." }
 ]

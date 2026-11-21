@@ -1,11 +1,120 @@
 [
   {
-    "id": "slime",
-    "name": "하늘 슬라임",
-    "island": "hunting-1",
-    "maxHp": 30,
-    "attack": 3,
-    "exp": 5,
-    "drops": [{ "itemId": "slime-jelly", "chance": 0.5 }]
+    "id": "dew-slime",
+    "name": "이슬 슬라임",
+    "level": 1,
+    "description": "아침 이슬이 뭉쳐 생긴 말랑한 슬라임. 가까이 다가가야 알아챈다.",
+    "model": "slime",
+    "color": "#8fe3ff",
+    "size": 1,
+    "maxHp": 40,
+    "attack": 6,
+    "defense": 0,
+    "moveSpeed": 2.2,
+    "aggroRange": 3,
+    "leashRange": 14,
+    "attackRange": 0.6,
+    "attackWindupSec": 0.4,
+    "attackCooldownSec": 1.8,
+    "respawnSec": 12,
+    "exp": 6,
+    "gold": [1, 3],
+    "drops": [
+      { "itemId": "slime-jelly", "chance": 0.6 },
+      { "itemId": "small-potion", "chance": 0.08 }
+    ]
+  },
+  {
+    "id": "hop-mushroom",
+    "name": "깡총버섯",
+    "level": 3,
+    "description": "통통 튀어 다니는 버섯. 영역에 들어오면 머리로 들이받는다.",
+    "model": "mushroom",
+    "color": "#e86a5a",
+    "size": 1,
+    "maxHp": 75,
+    "attack": 10,
+    "defense": 3,
+    "moveSpeed": 2.8,
+    "aggroRange": 6,
+    "leashRange": 16,
+    "attackRange": 0.7,
+    "attackWindupSec": 0.35,
+    "attackCooldownSec": 1.6,
+    "respawnSec": 15,
+    "exp": 14,
+    "gold": [2, 5],
+    "drops": [
+      { "itemId": "mushroom-cap", "chance": 0.55 },
+      { "itemId": "small-potion", "chance": 0.1 },
+      { "itemId": "feather-charm", "chance": 0.01 }
+    ]
+  },
+  {
+    "id": "wind-boar",
+    "name": "바람 멧돼지",
+    "level": 5,
+    "description": "갈기에 바람을 품은 멧돼지. 멀리서도 냅다 달려든다.",
+    "model": "beast",
+    "color": "#9a6b4f",
+    "size": 1.1,
+    "maxHp": 150,
+    "attack": 15,
+    "defense": 6,
+    "moveSpeed": 4.2,
+    "aggroRange": 9,
+    "leashRange": 20,
+    "attackRange": 0.8,
+    "attackWindupSec": 0.5,
+    "attackCooldownSec": 2.2,
+    "respawnSec": 20,
+    "exp": 28,
+    "gold": [4, 9],
+    "patterns": [
+      { "type": "melee", "damageMultiplier": 1.2, "weight": 3 },
+      { "type": "charge", "damageMultiplier": 1.4, "windupSec": 0.8, "cooldownSec": 6, "recoverSec": 0.6, "length": 7, "width": 1.4, "weight": 1 }
+    ],
+    "drops": [
+      { "itemId": "boar-tusk", "chance": 0.5 },
+      { "itemId": "small-potion", "chance": 0.12 },
+      { "itemId": "leather-armor", "chance": 0.03 },
+      { "itemId": "feather-charm", "chance": 0.03 },
+      { "itemId": "iron-sword", "chance": 0.02 }
+    ]
+  },
+  {
+    "id": "moss-golem",
+    "name": "이끼 골렘",
+    "title": "초원의 수호자",
+    "level": 8,
+    "description": "섬이 하늘로 떠오르던 날부터 초원을 지켜 온 바위 거인. 등에 자란 이끼가 숨을 쉰다.",
+    "isBoss": true,
+    "model": "golem",
+    "color": "#6f8f5a",
+    "size": 2.4,
+    "maxHp": 1800,
+    "attack": 24,
+    "defense": 12,
+    "moveSpeed": 2.6,
+    "aggroRange": 12,
+    "leashRange": 18,
+    "attackRange": 1.2,
+    "attackWindupSec": 0.7,
+    "attackCooldownSec": 2.4,
+    "respawnSec": 300,
+    "exp": 300,
+    "gold": [50, 80],
+    "patterns": [
+      { "type": "melee", "damageMultiplier": 1, "weight": 3 },
+      { "type": "slam", "damageMultiplier": 2, "windupSec": 1.2, "cooldownSec": 8, "recoverSec": 0.8, "radius": 4, "weight": 2 },
+      { "type": "charge", "damageMultiplier": 1.6, "windupSec": 1, "cooldownSec": 12, "recoverSec": 0.6, "length": 10, "width": 2.5, "weight": 2 }
+    ],
+    "drops": [
+      { "itemId": "moss-core", "chance": 1 },
+      { "itemId": "medium-potion", "chance": 1, "min": 2, "max": 3 },
+      { "itemId": "gale-sword", "chance": 0.25 },
+      { "itemId": "golem-plate", "chance": 0.25 },
+      { "itemId": "feather-charm", "chance": 0.3 }
+    ]
   }
 ]
