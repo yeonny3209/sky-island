@@ -1,6 +1,6 @@
 // 왼쪽 위: 초상화, 레벨, 이름·직업, 체력 바, 골드
-import { h } from '../dom.js';
-import { glyph } from '../icons.js';
+import { h, replace } from '../dom.js';
+import { entryIcon, glyph } from '../icons.js';
 import { formatNumber } from '../format.js';
 
 export function createPlayerFrame() {
@@ -25,6 +25,9 @@ export function createPlayerFrame() {
       nameEl.textContent = name;
       classEl.textContent = cls?.name ?? '';
       portrait.style.setProperty('--class-color', cls?.color ?? '#5b8def');
+      // 직업 초상화(icon)가 있으면 그림을, 없으면 바람 모양 임시 그림을 쓴다
+      replace(portrait, cls?.icon ? entryIcon(cls) : glyph('wind'));
+      portrait.classList.toggle('si-portrait--img', Boolean(cls?.icon));
     },
     setLevel(level) {
       levelBadge.textContent = String(level);

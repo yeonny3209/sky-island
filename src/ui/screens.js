@@ -1,6 +1,6 @@
 // 시작 화면: 로그인(온라인: 이메일, 오프라인: 테스트 이름) → 캐릭터 불러오기 → 없으면 만들기 → 월드 입장
 import { h, replace } from './dom.js';
-import { glyph } from './icons.js';
+import { entryIcon, glyph } from './icons.js';
 
 export function createScreens(ctx) {
   const { game } = ctx;
@@ -109,6 +109,7 @@ export function createScreens(ctx) {
     });
     show(
       h('div', { class: 'si-login__class', style: { '--class-color': cls.color } },
+        cls.icon ? h('div', { class: 'si-portrait si-portrait--img si-login__portrait' }, entryIcon(cls)) : null,
         h('div', { class: 'si-login__class-name' }, cls.name),
         cls.description ? h('p', { class: 'si-login__sub' }, cls.description) : null),
       form);

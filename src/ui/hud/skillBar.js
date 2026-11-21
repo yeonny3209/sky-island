@@ -2,7 +2,7 @@
 // 버튼을 누르면 game.combat.useSlot(i). 재사용 대기는 매 프레임 game.combat.getSlots()에서 읽는다.
 // 맨 오른쪽은 물약 칸: 가방에 가장 많은 회복 아이템을 game.useItem으로 쓴다.
 import { h, replace } from '../dom.js';
-import { glyph } from '../icons.js';
+import { entryIcon, glyph } from '../icons.js';
 import { formatSeconds } from '../format.js';
 import { keyLabel } from '../../engine/input/bindings.js';
 
@@ -20,14 +20,14 @@ export function createSkillBar(ctx) {
     const cdText = h('div', { class: 'si-skill__cdtext' });
     const keys = slot.keys.map(keyLabel);
     if (i === 0) keys.unshift('클릭');
-    const skill = i === 0 ? null : game.data.getSkill(slot.skillId);
+    const skill = i === 0 ? game.character?.classDef?.basicAttack : game.data.getSkill(slot.skillId);
     const btn = h('button', {
       class: `si-skill si-skill--${i === 0 ? 'basic' : `s${i}`} si-interactive`,
       type: 'button',
       title: `${slot.name}${slot.description ? ` — ${slot.description}` : ''}`,
       'aria-label': slot.name,
     },
-    h('div', { class: 'si-skill__icon' }, glyph(SKILL_GLYPHS[i] ?? 'slash', skill?.color ?? '#dfe9ff')),
+    h('div', { class: 'si-skill__icon' }, entryIcon({ ...skill, glyph: SKILL_GLYPHS[i] ?? 'slash', color: skill?.color ?? '#dfe9ff' })),
     cd, cdText,
     h('div', { class: 'si-skill__key' }, keys.slice(0, 2).join('/')),
     h('div', { class: 'si-skill__name' }, slot.name));
@@ -83,6 +83,10 @@ export function createSkillBar(ctx) {
   function refreshPotion() {
     if (!potion) return;
     const best = pickPotion();
+    if ((best?.item.id ?? null) !== potion.itemId) {
+      potion.itemId = best?.item.id ?? null;
+      replace(potion.icon, best ? entryIcon(best.item) : glyph('potion', '#ff7a7a'));
+    }
     potion.count.textContent = best ? String(best.count) : '';
     potion.btn.classList.toggle('si-skill--empty', !best);
     potion.btn.title = best ? `${best.item.name} (${keyLabel(POTION_KEY_CODE)})` : '물약 없음';
